@@ -1,49 +1,45 @@
 
 // Rust
 
-mod text_utils {
-    fn extract_number(word: String) -> u8 {
-        const MIN_SIZE: u8 = 3;
-        const MAX_SIZE: u8 = 6;
+pub mod text_utils {
+    use std::{ops::Index, io::Bytes};
+
+    pub fn extract_number(word: &[u8]) -> u8 {
+        const MIN_SIZE:u8 = 3;
+        const MAX_SIZE:u8 = 6;
         let mut i = 0 ;
         let mut j = word.len();
-        let mut head = String::new();
-        let mut tail = String::new();
-        let mut checker = String::new();
-        let iter = word.chars().into_iter();
+        let mut head:&[u8];
+        let mut tail:&[u8];
+        let mut checker:&[u8];
+
         while i < j {
-            if(i>050 && i<059) {
-                head.push_str(i);
-            }
-            else {
-                head.push_str(i);
-            }
-            if(j>050 && j<059) {
-                tail.push_str(j);
-            } 
-            else {
-                tail.push_str(j);
-            }
-            i += 1;
-            j += 1;
+            if validate_short(&word[i]) && !head.n {
+                head = &[word[i]];
+            } else {
+                tail = &[word[i]];
+            };
         } ;
-    };
+    }
 
-    fn validate(value: String) -> bool {
-        value>050 && value<059
-        const words: [String; 10] = [
-            String::from("zero"),
-            String::from("one"),
-            String::from("two"),
-            String::from("three"),
-            String::from("four"),
-            String::from("five"),
-            String::from("six"),
-            String::from("seven"),
-            String::from("height"),
-            String::from("nine")
+    fn validate_short(value: &u8) -> bool {
+        return *value > 050 && *value < 059;
+    }
+
+    fn validate_long(value: &[u8]) -> bool {
+        const words: [&[u8]; 10] = [
+            "zero".as_bytes(),
+            "one".as_bytes(),
+            "two".as_bytes(),
+            "three".as_bytes(),
+            "four".as_bytes(),
+            "five".as_bytes(),
+            "six".as_bytes(),
+            "seven".as_bytes(),
+            "height".as_bytes(),
+            "nine".as_bytes()
         ];
-
+        let valuec = String::from_utf8(value.to_vec());
         return words.contains(&value);
     }
 }
