@@ -25,19 +25,14 @@ pub fn boat_race(){
             Err(error) => panic!("Failure when reading line from buffer: {:?}", error),
         };
         let splited = line.split(' ');
+        let race = Race {
+            race_time: match splited.nth(1).unwrap().replace(" ",""), // Spaces cleaning
+            record_distance: match splited.nth(0).unwrap().replace(" ",""), // Spaces cleaning
+        };
         list.push_back(
-            Race {
-                race_time: match splited.nth(1) {
-                    Some(newString) => newString,
-                    None => panic!("Failure when spliting string"),
-                }.replace(" ",""), // Spaces cleaning
-                record_distance: match splited.nth(0) {
-                    Some(newString) => newString,
-                    None => panic!("Failure when spliting string"),
-                }.replace(" ","") // Spaces cleaning
-            }
+            race
         )
-    }
+    };
 
     let mut iter = list.iter();
     let mut sum = 0;

@@ -2,8 +2,8 @@
 // Rust
 
 pub struct Race {
-    race_time:u8,
-    record_distance:u8
+    pub race_time:u8,
+    pub record_distance:u8
 }
 
 pub fn ways_to_win(race:Race, ways: &u8, button_time: u8) {
