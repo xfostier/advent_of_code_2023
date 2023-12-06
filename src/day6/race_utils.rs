@@ -1,22 +1,19 @@
 
 // Rust
 
-pub mod race_utils {
+pub struct Race {
+    race_time:u8,
+    record_distance:u8
+}
 
-    pub struct Race {
-        race_time:u8,
-        record_distance:u8
+pub fn ways_to_win(race:Race, ways: &u8, button_time: u8) {
+    // eliminate 0
+    // eliminate max time
+    if button_time == race.race_time {
+        return;
     }
-
-    pub fn ways_to_win(race:Race, ways: &u8, button_time: u8) {
-        // eliminate 0
-        // eliminate max time
-        if button_time == race.race_time {
-            return;
-        }
-        if button_time*(race.race_time-button_time) > race.record_distance {
-            *ways += 1;
-        }
-        return ways_to_win(race, ways, button_time+1)
+    if button_time*(race.race_time-button_time) > race.record_distance {
+        *ways += 1;
     }
+    return ways_to_win(race, ways, button_time+1)
 }
