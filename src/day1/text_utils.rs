@@ -9,15 +9,15 @@ pub mod text_utils {
         const MAX_SIZE:u8 = 6;
         let mut i = 0 ;
         let mut j = word.len();
-        let mut head:&[u8];
-        let mut tail:&[u8];
-        let mut checker:&[u8];
+        let mut head:Box<[u8]>;
+        let mut tail:Box<[u8]>;
+        let mut checker:Box<[u8]>;
 
         while i < j {
-            if validate_short(&word[i]) && !head.n {
+            if validate_short(&word[i]) && !head.is_empty() {
                 head = &[word[i]];
             } else {
-                tail = &[word[i]];
+                tail = [word[i]];
             };
         } ;
     }
@@ -39,7 +39,6 @@ pub mod text_utils {
             "height".as_bytes(),
             "nine".as_bytes()
         ];
-        let valuec = String::from_utf8(value.to_vec());
         return words.contains(&value);
     }
 }
