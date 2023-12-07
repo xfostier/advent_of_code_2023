@@ -25,9 +25,11 @@ pub fn boat_race(){
             Err(error) => panic!("Failure when reading line from buffer: {:?}", error),
         };
         let splited = line.split(' ');
+        let a = splited.nth(1).unwrap().replace(" ","").parse::<u8>().unwrap();
+        let b = splited.nth(0).unwrap().replace(" ","").parse::<u8>().unwrap();
         let race = Race {
-            race_time: match splited.nth(1).unwrap().replace(" ",""), // Spaces cleaning
-            record_distance: match splited.nth(0).unwrap().replace(" ",""), // Spaces cleaning
+            race_time: a, // Spaces cleaning
+            record_distance: b, // Spaces cleaning
         };
         list.push_back(
             race
@@ -38,7 +40,7 @@ pub fn boat_race(){
     let mut sum = 0;
     while let x = iter.next(){
         let mut ways = 0;
-        super::race_utils::ways_to_win(iter, &ways, 0);
+        super::race_utils::ways_to_win(x.unwrap().to_owned(), &ways, 0);
         sum += ways;
     };
 
