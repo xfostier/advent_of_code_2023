@@ -14,7 +14,7 @@ fn digits_factory() {
     let mut list: LinkedList<&[u8]> = LinkedList::new();
 
     // Loading file
-    let file_path = Path::new("day1/data.txt");
+    let file_path = Path::new("src/day1/data.txt");
     let file = match fs::File::open(file_path) {
         Ok(file) => file,
         Err(error) => panic!("Problem opening the file: {:?}", error),
