@@ -2,5 +2,6 @@
     "rust-analyzer.linkedProjects": [
         "./Cargo.toml",
     ],
-    "git.enabled": false
+    "git.enabled": false,
+    "rust-analyzer.showUnlinkedFileNotification": false
 }

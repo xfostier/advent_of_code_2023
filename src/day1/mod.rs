@@ -1,4 +1,5 @@
 
 // Modules
 
-pub mod day1;
+pub mod digits_factory;
+pub mod text_utils;

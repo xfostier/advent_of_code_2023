@@ -5,39 +5,65 @@ use std::fs;
 use std::io::{BufReader, BufRead};
 use std::path::Path;
 use std::collections::LinkedList;
+// https://docs.rs/regex-lite/latest/regex_lite/
 use regex_lite::Regex;
 
-pub fn boat_race(){
-    // Linked list of array of bytes representing characters
+use crate::day6::race_utils;
+
+use super::utils::Contatenable;
+
+// PART 1
+pub fn boat_race_part1(file_path: &Path) -> u64 {
+    // Linked list of Races
     let mut list: LinkedList<crate::day6::race_utils::Race> = LinkedList::new();
+    let dual_list = read_file(file_path);
 
-    let file_path = Path::new("src/day6/data.txt");
-    while let a = list.
-    for iter in list {
-        println!("{}", line);
+    // https://stackoverflow.com/questions/38826633/how-to-skip-the-first-n-items-of-an-iterator-in-rust
+    let mut times_iter = dual_list.iter().nth(0).unwrap().iter().skip(1); // dropping title
+    let mut records_iter = dual_list.iter().nth(1).unwrap().iter().skip(1); // dropping title
 
-        let race = Race {
-            race_time: time,
-            record_distance: button
+    while let Some(time) = times_iter.next() {
+        let record = records_iter.next().unwrap(); // TODO may panic
+        println!("{}", record);
+        let race = race_utils::Race {
+            race_time: time.parse::<u64>().unwrap(),
+            record_distance: record.parse::<u64>().unwrap()
         };
+        
         list.push_back(
             race
         )
     }
 
     let mut iter = list.iter();
-    let mut sum = 0;
-    while let x = iter.next().unwrap() {
-        let mut ways = 0;
-        super::race_utils::ways_to_win(x, ways, 0);
-        sum += ways;
+    let mut product = 1;
+    while let Some(x) = iter.next() {
+        let ways = 0;
+        let ways = super::race_utils::ways_to_win_simple_recursive(x, ways, 0);
+        product *= ways;
     };
 
-    println!("DAY6 sum: {} \n", sum);
+    return product;
+}
+
+// PART 2
+pub fn boat_race_part2(file_path: &Path) -> u64 {
+    let mut dual_list = read_file(file_path);
+
+    // https://stackoverflow.com/questions/38826633/how-to-skip-the-first-n-items-of-an-iterator-in-rust
+    let time = dual_list.iter_mut().nth(0).unwrap().split_off(1).concatenated(); // dropping title
+    let record = dual_list.iter_mut().nth(1).unwrap().split_off(1).concatenated(); // dropping title
+    let race = race_utils::Race {
+            race_time: time.parse::<u64>().unwrap(),
+            record_distance: record.parse::<u64>().unwrap()
+        };
+    let ways = 0;
+    let ways = super::race_utils::ways_to_win_divide_and_conquer(&race, ways, 0);
+    return ways;
 }
 
 // Loading file
-fn read_File(file_path: &Path)-> LinkedList<LinkedList<String>> {
+fn read_file(file_path: &Path)-> LinkedList<LinkedList<String>> {
     let file = match fs::File::open(file_path) {
         Ok(file) => file,
         Err(error) => panic!("Problem opening the file: {:?}", error),
@@ -50,28 +76,23 @@ fn read_File(file_path: &Path)-> LinkedList<LinkedList<String>> {
             Ok(line) => line,
             Err(error) => panic!("Failure when reading line from buffer: {:?}", error),
         };
-        println!("{}", line);
-        list.push_back(tokenize(line, String::from(" "), true));
+        list.push_back(tokenize(line.as_str(), " ", Regex::new("[^\\s]+").unwrap()));
     }
     return list;
 }
 
 // Tokenize and cleaning spaces lines
-fn tokenize(text: String, separator: String, cleaning_reg: Regex) -> LinkedList<String> {
+fn tokenize<'a>(text: & 'a str, separator: &str, cleaning_reg: Regex) -> LinkedList<String> {
     let mut list:LinkedList<String> = LinkedList::new();
-    let mut splited = text.split(separator.as_str());
+    let splited = text.split(separator);
     for iter in splited {
 
-        if iter == " " || iter == "\t" {
+        if iter == " " || iter == "\t" || iter == "" {
             continue;
         }
 
-        if remove_duplicate {
-            let cleaned = cleaning_reg.replace_all();
-            list.push_back(iter.replace(" ","")); // Spaces cleaning - TODO: may panic 
-        } else {
-        list.push_back(iter.to_string());
-        }
+        let match_range = cleaning_reg.find(iter).unwrap(); // Spaces cleaning - TODO: may panic 
+        list.push_back(iter[match_range.start()..match_range.end()].to_string());
     }
     return list;
 }
