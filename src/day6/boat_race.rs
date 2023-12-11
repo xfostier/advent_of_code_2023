@@ -24,7 +24,6 @@ pub fn boat_race_part1(file_path: &Path) -> u64 {
 
     while let Some(time) = times_iter.next() {
         let record = records_iter.next().unwrap(); // TODO may panic
-        println!("{}", record);
         let race = race_utils::Race {
             race_time: time.parse::<u64>().unwrap(),
             record_distance: record.parse::<u64>().unwrap()
@@ -57,8 +56,7 @@ pub fn boat_race_part2(file_path: &Path) -> u64 {
             race_time: time.parse::<u64>().unwrap(),
             record_distance: record.parse::<u64>().unwrap()
         };
-    let ways = 0;
-    let ways = super::race_utils::ways_to_win_divide_and_conquer(&race, ways, 0);
+    let ways = super::race_utils::ways_to_win_simple_recursive(&race, 0, 0);
     return ways;
 }
 

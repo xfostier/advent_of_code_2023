@@ -8,8 +8,21 @@ use std::collections::LinkedList;
 use std::str::Bytes;
 mod text_utils;
 
-fn digits_factory() {
 
+// ex: 1zefone5|zeekfour
+fn digits_factory() {
+    let mut iter = list.iter();
+    let mut buffer_i = [u8];
+    let mut buffer_j = [u8];
+    let mut i = 0;
+    let mut j = 0;
+    while let x = iter.next() {
+        text_utils::extract_number(x);
+    };
+}
+
+
+fn read_file(file_path: Path) {
     // Linked list of array of bytes representing characters
     let mut list: LinkedList<&[u8]> = LinkedList::new();
 
@@ -25,9 +38,5 @@ fn digits_factory() {
         let line = line?;
         list.push_back(line.as_bytes());
     }
-
-    let mut iter = list.iter();
-    while let x = iter.next() {
-        text_utils::extract_number(x);
-    };
+    return list;
 }
